@@ -1,12 +1,6 @@
 package br.com.apisys.scholar.business;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.List;
-
-import org.springframework.util.ResourceUtils;
 
 import br.com.apisys.scholar.model.dao.StudentDao;
 import br.com.apisys.scholar.model.entity.Student;
@@ -14,8 +8,6 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Resource
 public class IndexController {
@@ -84,25 +76,6 @@ public class IndexController {
 			studentDao.removeById(id);
 		}
 		result.forwardTo(this).listStudents();
-	}
-	
-	@Get("/report")
-	public InputStream downloadReport(){
-		
-		List <Student> students = studentDao.loadAll();
-		JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(students); 
-	    
-		try {  
-	        File jasperFile = ResourceUtils.getFile("classpath:/Relatorio.jasper");
-	        InputStream jasperStream = new FileInputStream(jasperFile);
-	        byte[] bytes = JasperRunManager.runReportToPdf(jasperStream, null, ds);  
-	        return new ByteArrayInputStream(bytes);
-	    
-		} catch (Exception e) {  
-	    	e.printStackTrace();
-	    }  
-	    
-		return null;  
-	}
+	}	
 
 }
